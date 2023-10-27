@@ -1,0 +1,21 @@
+@using Model;
+@using Services;
+@inject IBalanceService service
+
+<article class="detail-item" data-type="@Type.ToString()">
+    <span class="detail-title">@Type</span>
+    <span class="detail-balance">@Balance</span>
+    <button class="detail-action">+</button>
+</article>
+
+@code {
+    [Parameter]
+    public SpendType Type { get; set; }
+    private decimal Balance = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Balance = await service.GetBalanceByType(Type);
+    }
+}

@@ -1,0 +1,54 @@
+﻿@using Services;
+@inject IBalanceService service
+
+@* <section class="container"> *@
+    <header>
+    <fieldset>
+        <!-- La etiqueta <label> proporciona una descripción a los elementos de entrada. -->
+        <label hidden for="monthSelect">Select Month:</label>
+        <select id="monthSelect" class="form-control" @onchange="ChangeMonth">
+            @foreach (var month in months)
+            {
+                <option value="@month">@month</option>
+            }
+        </select>
+    </fieldset>
+
+        <!-- <header> se utiliza para contener contenido introductorio o de navegación. -->
+        <p>Balance</p>
+        @if (showBalance)
+        {
+            <h1>@Balance</h1>
+        }
+        else
+        {
+            <h1>********</h1>
+        }
+        <button class="btn btn-primary" @onclick="ToggleBalance">@toggleIcon</button>
+    </header>
+@* </section> *@
+
+@code {
+    private decimal Balance { get; set; } = 0;
+    private IEnumerable<string> months = new List<string>();
+    private bool showBalance = true;
+    private string toggleIcon => showBalance ? ":eyeclose:" : "$";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Balance = await service.GetBalance();
+        months = await service.GetMonths();
+    }
+
+    private void ToggleBalance()
+    {
+        showBalance = !showBalance;
+    }
+
+    private void ChangeMonth(ChangeEventArgs e)
+    {
+        service.ChangeMonth(e.Value.ToString());
+        Balance = service.GetBalance().Result;
+    }
+}

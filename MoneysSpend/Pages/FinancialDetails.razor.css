@@ -1,0 +1,7 @@
+﻿.detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Si tienes más estilos específicos para FinancialDetail, puedes agregarlos aquí */

@@ -1,0 +1,12 @@
+﻿@using Model;
+
+<section class="detail-list">
+    @foreach (SpendType category in Enum.GetValues(typeof(SpendType)))
+    {
+        <DetailItem Type="@category" />
+    }
+</section>
+
+@code {
+    
+}
